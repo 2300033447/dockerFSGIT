@@ -68,8 +68,15 @@ jobs:
               sudo systemctl start docker
             fi
 
-            # Step 4a: Install frontend dependencies
+            # Step 4a: Install Node.js and frontend dependencies
             if [ -f docker-fe-s104/package.json ]; then
+              # Install Node.js and npm if missing
+              if ! command -v npm &> /dev/null; then
+                echo "Installing Node.js and npm..."
+                curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+                sudo apt-get install -y nodejs
+              fi
+
               echo "Installing frontend dependencies..."
               cd docker-fe-s104
               npm install
